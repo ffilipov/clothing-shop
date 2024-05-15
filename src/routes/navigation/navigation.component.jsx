@@ -1,31 +1,18 @@
+import { Fragment, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { Fragment, useState, useEffect } from "react";
+import { UserContext } from "../../contexts/user.context";
+import { signOutAuthUser } from "../../utils/firebase/firebase.utils";  
+
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import "./navigation.styles.scss";
 
-import { signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../utils/firebase/firebase.utils';
 
 const Navigation = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-
-    return unsubscribe;
-  }, []);
-
-  const logoutUser = async () => {
-    try {
-      await signOut(auth);
-      setCurrentUser(null);
-      console.log('User logged out.');
-    } catch (error) {
-      console.log('Error logging out:', error);
-    }
-  };
+  const {currentUser, setCurrentUser} = useContext(UserContext);
+  const signOutHandler = async () => {
+    await signOutAuthUser();
+    setCurrentUser(null);
+  }
 
   return (
     <Fragment>
@@ -38,7 +25,7 @@ const Navigation = () => {
             SHOP
           </Link>
           {currentUser ? (
-            <Link className="nav-link" to="/" onClick={logoutUser}>
+            <Link className="nav-link" to="/" onClick={signOutHandler}>
               SIGN OUT
             </Link>
           ) : (
