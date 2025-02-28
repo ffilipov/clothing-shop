@@ -37,8 +37,21 @@ export const GoogleSignInButton = styled(BaseButton)`
 
 export const InvertedButton = styled(BaseButton)`
   background-color: white;
-  color: black;
   border: 1px solid black;
+  color: black;
+
+  &:hover {
+    background-color: black;
+    color: white;
+    border: none;
+  }
+`; 
+
+export const CartButton = styled(BaseButton)`
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-size: 12px;
 
   &:hover {
     background-color: black;
